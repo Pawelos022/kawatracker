@@ -8,358 +8,158 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700;800&family=Work+Sans:wght@400;500;600&display=swap');
 
 :root{
-  --espresso:#2B1810;
-  --espresso-soft:#4A2F1F;
-  --crema:#F4E8D8;
-  --crema-deep:#EADCC6;
-  --caramel:#C17F3E;
-  --caramel-deep:#9E5F26;
+  --espresso:#2B1810;--espresso-soft:#4A2F1F;
+  --crema:#F4E8D8;--crema-deep:#EADCC6;
+  --caramel:#C17F3E;--caramel-deep:#9E5F26;
   --rust:#8B4226;
-  --steel:#2A2E35;
-  --steel-soft:#3D424B;
+  --steel:#2A2E35;--steel-soft:#3D424B;
   --amber:#E8A33D;
-  --amber-deep:#C97D1F;
   --alert:#C44536;
-  --paper:#FBF6EC;
-  --ink:#241308;
-  --shadow: 0 18px 40px -16px rgba(43,24,16,0.45);
+  --paper:#FBF6EC;--ink:#241308;
+  --shadow:0 18px 40px -16px rgba(43,24,16,0.45);
 }
-
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
 body{
-  font-family:'Work Sans', sans-serif;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--crema);
-  color:var(--ink);
-  overflow-x:hidden;
-  transition:background 0.8s ease;
+  font-family:'Work Sans',sans-serif;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--crema);color:var(--ink);overflow-x:hidden;
 }
-
 .app{
-  position:relative;
-  width:100%;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:32px 18px;
-  isolation:isolate;
+  position:relative;width:100%;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:32px 18px;isolation:isolate;
 }
 
-/* ---------- background layers ---------- */
+/* backgrounds */
 .bg-base{
-  position:fixed;
-  inset:0;
-  z-index:-3;
-  background:radial-gradient(ellipse at 20% -10%, var(--crema-deep), var(--crema) 55%);
-  transition:background 0.8s ease;
+  position:fixed;inset:0;z-index:-3;
+  background:radial-gradient(ellipse at 20% -10%,var(--crema-deep),var(--crema) 55%);
+  transition:background 0.8s;
 }
-.app[data-state="broken"] .bg-base{
-  background:radial-gradient(ellipse at 20% -10%, var(--steel-soft), var(--steel) 60%);
-}
-
-.bg-pattern{position:fixed;inset:0;z-index:-2;opacity:0.16;transition:opacity 0.6s ease;}
+.app[data-state="broken"] .bg-base{background:radial-gradient(ellipse at 20% -10%,var(--steel-soft),var(--steel) 60%);}
+.bg-pattern{position:fixed;inset:0;z-index:-2;opacity:0.16;transition:opacity 0.6s;}
 .bg-pattern svg{width:100%;height:100%;}
-.bg-stripes{position:fixed;inset:0;z-index:-2;opacity:0;transition:opacity 0.6s ease;}
+.bg-stripes{position:fixed;inset:0;z-index:-2;opacity:0;transition:opacity 0.6s;}
 .app[data-state="broken"] .bg-stripes{opacity:0.14;}
 .app[data-state="broken"] .bg-pattern{opacity:0;}
 .bg-stripes .stripe-track{
   position:absolute;inset:-20% -20%;
-  background:repeating-linear-gradient(45deg, var(--amber) 0 28px, var(--steel) 28px 56px);
+  background:repeating-linear-gradient(45deg,var(--amber) 0 28px,var(--steel) 28px 56px);
   animation:slide-stripes 18s linear infinite;
 }
 @keyframes slide-stripes{from{transform:translate(0,0);}to{transform:translate(79px,79px);}}
-
 .vignette{position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(ellipse at 50% 100%, rgba(43,24,16,0.18), transparent 60%);}
+  background:radial-gradient(ellipse at 50% 100%,rgba(43,24,16,0.18),transparent 60%);}
 
-/* ---------- card ---------- */
+/* card */
 .card{
-  position:relative;
-  width:100%;
-  max-width:560px;
-  background:var(--paper);
-  border-radius:28px;
+  position:relative;width:100%;max-width:560px;
+  background:var(--paper);border-radius:28px;
   padding:clamp(28px,5vw,52px) clamp(22px,5vw,48px) clamp(30px,5vw,46px);
-  box-shadow:var(--shadow);
-  border:1px solid rgba(43,24,16,0.06);
-  text-align:center;
+  box-shadow:var(--shadow);border:1px solid rgba(43,24,16,0.06);text-align:center;
 }
-.app[data-state="broken"] .card{
-  box-shadow: 0 18px 40px -16px rgba(0,0,0,0.55);
-}
-
+.app[data-state="broken"] .card{box-shadow:0 18px 40px -16px rgba(0,0,0,0.55);}
 .ring-stain{position:absolute;right:-22px;bottom:-26px;width:140px;height:140px;opacity:0.5;pointer-events:none;}
 .app[data-state="broken"] .ring-stain{opacity:0.12;}
 
-/* ---------- header icon ---------- */
-.icon-wrap{
-  width:84px;height:84px;margin:0 auto 6px;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
+/* loading */
+.loading-overlay{
+  position:absolute;inset:0;background:var(--paper);border-radius:28px;
+  display:flex;align-items:center;justify-content:center;z-index:10;
+  transition:opacity 0.4s;
 }
+.loading-overlay.hidden{opacity:0;pointer-events:none;}
+.spinner{
+  width:36px;height:36px;border:3px solid rgba(43,24,16,0.12);
+  border-top-color:var(--caramel);border-radius:50%;
+  animation:spin-s 0.8s linear infinite;
+}
+@keyframes spin-s{to{transform:rotate(360deg);}}
+
+/* icons */
+.icon-wrap{width:84px;height:84px;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;}
 .icon-wrap svg{width:100%;height:100%;overflow:visible;}
-.steam-line{
-  fill:none;stroke:var(--caramel-deep);stroke-width:3;stroke-linecap:round;
-  opacity:0;
-  animation:rise 3.2s ease-in-out infinite;
-}
+.steam-line{fill:none;stroke:var(--caramel-deep);stroke-width:3;stroke-linecap:round;opacity:0;animation:rise 3.2s ease-in-out infinite;}
 .app[data-state="working"] .steam-line{opacity:0.55;}
-.steam-line.s2{animation-delay:0.9s;}
-.steam-line.s3{animation-delay:1.8s;}
-@keyframes rise{
-  0%{opacity:0; transform:translateY(4px) scaleY(0.8);}
-  30%{opacity:0.6;}
-  100%{opacity:0; transform:translateY(-14px) scaleY(1.1);}
-}
-.cup-body{fill:var(--espresso);}
-.cup-base{fill:var(--rust);}
-
+.steam-line.s2{animation-delay:0.9s;}.steam-line.s3{animation-delay:1.8s;}
+@keyframes rise{0%{opacity:0;transform:translateY(4px);}30%{opacity:0.6;}100%{opacity:0;transform:translateY(-14px);}}
+.cup-body{fill:var(--espresso);}.cup-base{fill:var(--rust);}
 .gear{transform-origin:50px 50px;}
-.app[data-state="broken"] .gear{animation:spin 6s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
+.app[data-state="broken"] .gear{animation:spin-g 6s linear infinite;}
+@keyframes spin-g{to{transform:rotate(360deg);}}
 .gear-ring{fill:none;stroke:var(--amber);stroke-width:9;}
-.gear-tooth{fill:var(--amber);}
-.gear-bolt{fill:var(--steel);}
+.gear-tooth{fill:var(--amber);}.gear-bolt{fill:var(--steel);}
 .alert-dot{fill:var(--alert);}
-.alert-pulse{
-  animation:pulse 1.8s ease-in-out infinite;
-  transform-origin:center;
-}
+.alert-pulse{animation:pulse 1.8s ease-in-out infinite;transform-origin:center;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.35;transform:scale(1.18);}}
-
-.icon-coffee{display:block;}
-.icon-repair{display:none;}
+.icon-coffee{display:block;}.icon-repair{display:none;}
 .app[data-state="broken"] .icon-coffee{display:none;}
 .app[data-state="broken"] .icon-repair{display:block;}
 
-/* ---------- typography ---------- */
-.eyebrow{
-  font-family:'JetBrains Mono', monospace;
-  font-size:12px;
-  letter-spacing:0.18em;
-  font-weight:700;
-  text-transform:uppercase;
-  color:var(--caramel-deep);
-  margin:2px 0 4px;
-  transition:color 0.6s ease;
-}
+/* typography */
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.18em;font-weight:700;text-transform:uppercase;color:var(--caramel-deep);margin:2px 0 4px;}
 .app[data-state="broken"] .eyebrow{color:var(--amber);}
-
-.quip{
-  font-size:13.5px;
-  color:var(--espresso-soft);
-  opacity:0.62;
-  margin:0 0 22px;
-  min-height:18px;
-}
+.quip{font-size:13.5px;color:var(--espresso-soft);opacity:0.62;margin:0 0 22px;min-height:18px;}
 .app[data-state="broken"] .quip{color:var(--crema-deep);opacity:0.75;}
 
-/* ---------- flip counter ---------- */
-.counter-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  margin:6px 0 14px;
-  perspective:600px;
-  flex-wrap:wrap;
-}
+/* flip counter */
+.counter-row{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0 14px;perspective:600px;flex-wrap:wrap;}
 .flip-digit{
-  position:relative;
-  width:clamp(46px,12vw,64px);
-  height:clamp(64px,16vw,88px);
-  background:linear-gradient(180deg, #3a2516, var(--espresso) 52%, #1c0f08);
-  border-radius:9px;
-  box-shadow:0 6px 0 rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+  position:relative;width:clamp(46px,12vw,64px);height:clamp(64px,16vw,88px);
+  background:linear-gradient(180deg,#3a2516,var(--espresso) 52%,#1c0f08);
+  border-radius:9px;box-shadow:0 6px 0 rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,255,255,0.08);
 }
-.app[data-state="broken"] .flip-digit{
-  background:linear-gradient(180deg, #4a4f59, var(--steel) 52%, #16181c);
-}
-.flip-digit::after{
-  content:"";
-  position:absolute;left:0;right:0;top:50%;height:2px;
-  background:rgba(0,0,0,0.45);
-  transform:translateY(-1px);
-  z-index:2;
-}
-.flip-digit .face{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono', monospace;
-  font-weight:800;
-  font-size:clamp(30px,8vw,44px);
-  color:var(--crema);
-  backface-visibility:hidden;
-}
+.app[data-state="broken"] .flip-digit{background:linear-gradient(180deg,#4a4f59,var(--steel) 52%,#16181c);}
+.flip-digit::after{content:"";position:absolute;left:0;right:0;top:50%;height:2px;background:rgba(0,0,0,0.45);transform:translateY(-1px);z-index:2;}
+.flip-digit .face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:clamp(30px,8vw,44px);color:var(--crema);backface-visibility:hidden;}
 .flip-digit.flipping .face{animation:flipDigit 0.55s ease;}
-@keyframes flipDigit{
-  0%{transform:rotateX(0deg);}
-  48%{transform:rotateX(-92deg);}
-  52%{transform:rotateX(-92deg);}
-  100%{transform:rotateX(0deg);}
-}
-.counter-unit{
-  font-family:'Fraunces', serif;
-  font-weight:600;
-  font-size:clamp(17px,4vw,21px);
-  margin-left:4px;
-  color:var(--espresso);
-}
+@keyframes flipDigit{0%{transform:rotateX(0deg);}48%{transform:rotateX(-92deg);}52%{transform:rotateX(-92deg);}100%{transform:rotateX(0deg);}}
+.counter-unit{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(17px,4vw,21px);margin-left:4px;color:var(--espresso);}
 .app[data-state="broken"] .counter-unit{color:var(--crema);}
-
-.counter-label{
-  font-family:'Fraunces', serif;
-  font-weight:600;
-  font-size:clamp(18px,3.6vw,22px);
-  letter-spacing:0.01em;
-  color:var(--espresso);
-  margin:2px 0 18px;
-  transition:color 0.6s ease;
-}
+.counter-label{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(18px,3.6vw,22px);color:var(--espresso);margin:2px 0 18px;}
 .app[data-state="broken"] .counter-label{color:var(--crema);}
 
-/* ---------- meta ---------- */
-.meta{
-  display:flex;
-  justify-content:center;
-  gap:18px;
-  flex-wrap:wrap;
-  font-family:'JetBrains Mono', monospace;
-  font-size:12.5px;
-  color:var(--espresso-soft);
-  opacity:0.8;
-  margin-bottom:26px;
-}
+/* meta */
+.meta{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--espresso-soft);opacity:0.8;margin-bottom:26px;}
 .app[data-state="broken"] .meta{color:var(--crema-deep);}
-.meta b{color:inherit;font-weight:700;}
+.meta b{font-weight:700;}
 
-/* ---------- actions ---------- */
+/* buttons */
 .actions{display:flex;flex-direction:column;align-items:center;gap:10px;}
-.btn{
-  font-family:'Work Sans', sans-serif;
-  font-weight:600;
-  font-size:15px;
-  border:none;
-  border-radius:999px;
-  padding:14px 30px;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.3s ease;
-  box-shadow:0 10px 20px -8px rgba(43,24,16,0.4);
-}
+.btn{font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;border:none;border-radius:999px;padding:14px 30px;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:transform 0.15s,background 0.3s;box-shadow:0 10px 20px -8px rgba(43,24,16,0.4);}
 .btn:active{transform:translateY(1px) scale(0.98);}
-.btn:focus-visible{outline:3px solid var(--caramel); outline-offset:3px;}
 .btn-report{background:var(--alert);color:var(--paper);}
 .btn-report:hover{background:#a83a2d;}
 .btn-fixed{background:var(--caramel);color:var(--paper);}
 .btn-fixed:hover{background:var(--caramel-deep);}
 .btn.armed{background:var(--ink);}
-.btn:disabled{opacity:0.5;cursor:not-allowed;}
-
-.link-btn{
-  background:none;border:none;cursor:pointer;
-  font-family:'JetBrains Mono', monospace;
-  font-size:12px;
-  color:var(--espresso-soft);
-  opacity:0.65;
-  text-decoration:underline;
-  padding:6px;
-}
-.link-btn:focus-visible{outline:2px solid var(--caramel);outline-offset:2px;}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.link-btn{background:none;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--espresso-soft);opacity:0.65;text-decoration:underline;padding:6px;}
 .app[data-state="broken"] .link-btn{color:var(--crema-deep);}
 
-/* ---------- settings panel ---------- */
-.settings{
-  margin-top:16px;
-  text-align:left;
-  background:rgba(43,24,16,0.04);
-  border-radius:14px;
-  padding:16px 18px;
-  display:none;
-}
+/* settings */
+.settings{margin-top:16px;text-align:left;background:rgba(43,24,16,0.04);border-radius:14px;padding:16px 18px;display:none;}
 .settings.open{display:block;}
-.settings label{
-  display:block;font-family:'JetBrains Mono',monospace;font-size:11px;
-  letter-spacing:0.05em;text-transform:uppercase;opacity:0.6;margin-bottom:5px;
-}
-.settings input[type="date"]{
-  font-family:'Work Sans',sans-serif;font-size:14px;padding:8px 10px;
-  border-radius:8px;border:1px solid rgba(43,24,16,0.18);width:100%;margin-bottom:12px;background:#fff;
-}
-.settings .save-btn{
-  background:var(--ink);color:var(--paper);border:none;border-radius:8px;
-  padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;
-}
+.settings label{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.05em;text-transform:uppercase;opacity:0.6;margin-bottom:5px;}
+.settings input[type="date"]{font-family:'Work Sans',sans-serif;font-size:14px;padding:8px 10px;border-radius:8px;border:1px solid rgba(43,24,16,0.18);width:100%;margin-bottom:12px;background:#fff;}
+.settings .save-btn{background:var(--ink);color:var(--paper);border:none;border-radius:8px;padding:9px 16px;font-weight:600;font-size:13px;cursor:pointer;}
 
-/* ---------- history ---------- */
+/* history */
 .history{margin-top:18px;text-align:left;}
 .history-list{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;}
-.history-list li{
-  font-size:13px;
-  background:rgba(43,24,16,0.04);
-  border-radius:10px;
-  padding:9px 12px;
-  display:flex;justify-content:space-between;gap:10px;
-}
+.history-list li{font-size:13px;background:rgba(43,24,16,0.04);border-radius:10px;padding:9px 12px;display:flex;justify-content:space-between;gap:10px;}
 .app[data-state="broken"] .history-list li{background:rgba(255,255,255,0.06);color:var(--crema);}
 .history-empty{font-size:13px;opacity:0.6;padding:8px 2px;}
+.badge{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;background:var(--caramel);color:var(--paper);border-radius:6px;padding:2px 7px;}
 
-.badge{
-  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;
-  background:var(--caramel);color:var(--paper);border-radius:6px;padding:2px 7px;
-}
-
-.offline-banner{
-  font-family:'JetBrains Mono',monospace;font-size:11px;
-  background:var(--alert);color:#fff;text-align:center;
-  padding:7px;border-radius:10px;margin-bottom:16px;display:none;
-}
+/* banners */
+.offline-banner{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--alert);color:#fff;text-align:center;padding:7px;border-radius:10px;margin-bottom:16px;display:none;}
 .offline-banner.show{display:block;}
 
-footer.credit{
-  margin-top:22px;font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;
-}
+footer.credit{margin-top:22px;font-size:11px;opacity:0.4;font-family:'JetBrains Mono',monospace;}
 
-/* ---------- setup screen ---------- */
-.setup-view{text-align:left;}
-.setup-view h1{
-  font-family:'Fraunces', serif;
-  font-size:clamp(22px,5vw,28px);
-  margin:0 0 6px;
-  color:var(--espresso);
-}
-.setup-view p{font-size:14px;line-height:1.55;color:var(--espresso-soft);margin:0 0 16px;}
-.setup-view input[type="email"]{
-  width:100%;font-family:'Work Sans',sans-serif;font-size:14px;
-  padding:11px 13px;border-radius:9px;border:1px solid rgba(43,24,16,0.18);
-  margin-bottom:14px;background:#fff;
-}
-.setup-status{font-size:13px;margin-top:10px;min-height:18px;color:var(--espresso-soft);}
-.setup-status.error{color:var(--alert);font-weight:600;}
-.code-box{
-  font-family:'JetBrains Mono',monospace;font-size:12.5px;
-  background:var(--ink);color:var(--crema);
-  padding:14px 16px;border-radius:10px;
-  word-break:break-all;margin:14px 0;line-height:1.5;
-}
-.setup-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
-.btn-secondary{
-  background:rgba(43,24,16,0.08);color:var(--espresso);
-  font-family:'Work Sans',sans-serif;font-weight:600;font-size:13.5px;
-  border:none;border-radius:999px;padding:11px 20px;cursor:pointer;
-}
-.btn-secondary:hover{background:rgba(43,24,16,0.14);}
-
-@media (prefers-reduced-motion: reduce){
-  .steam-line, .gear, .alert-pulse, .stripe-track, .flip-digit.flipping .face{animation:none !important;}
-}
+@media(prefers-reduced-motion:reduce){.steam-line,.gear,.alert-pulse,.stripe-track,.flip-digit.flipping .face,.spinner{animation:none!important;}}
 </style>
 </head>
 <body>
@@ -398,245 +198,190 @@ footer.credit{
       <circle cx="70" cy="70" r="40" fill="none" stroke="#8B4226" stroke-width="3" opacity="0.6"/>
     </svg>
 
-    <!-- ===== ONE-TIME SETUP VIEW (shown only if BUCKET_ID below is empty) ===== -->
-    <div class="setup-view" id="setupView" style="display:none;">
-      <h1>☕ Pierwsze uruchomienie</h1>
-      <p>Ta tablica potrzebuje wspólnej, darmowej bazy danych (kvdb.io), żeby licznik był taki sam dla całego biura. Utwórz ją jednym kliknięciem — to zajmie 2 sekundy.</p>
-      <label for="setupEmail" style="font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;opacity:0.6;display:block;margin-bottom:5px;">E-mail (opcjonalnie, na wypadek odzyskiwania bazy)</label>
-      <input type="email" id="setupEmail" placeholder="np. biuro@firma.pl">
-      <div class="setup-actions">
-        <button class="btn btn-fixed" id="createBucketBtn" type="button">Utwórz wspólną bazę</button>
-      </div>
-      <div class="setup-status" id="setupStatus"></div>
-      <div id="setupResult" style="display:none;">
-        <p style="margin-top:18px;"><strong>Gotowe.</strong> W pliku HTML znajdź linijkę:<br><code>let BUCKET_ID = "";</code><br>i zamień ją na:</p>
-        <div class="code-box" id="bucketCodeLine"></div>
-        <p>Zapisz plik i wgraj go ponownie (np. <code>git add . && git commit -m "bucket" && git push</code>). Dopóki tego nie zrobisz, licznik widoczny będzie tylko w tej przeglądarce.</p>
-        <div class="setup-actions">
-          <button class="btn-secondary" id="copyBucketCode" type="button">Kopiuj linijkę</button>
-          <button class="btn btn-fixed" id="continueBtn" type="button">Przejdź do tablicy →</button>
-        </div>
-      </div>
-    </div>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+    <div class="offline-banner" id="offlineBanner">Brak połączenia z bazą — zmiany nie zapiszą się dla reszty biura</div>
 
-    <!-- ===== MAIN VIEW ===== -->
-    <div id="mainView" style="display:none;">
-      <div class="offline-banner" id="offlineBanner">Brak połączenia z bazą — zmiany nie zapiszą się dla reszty biura</div>
-
-      <div class="icon-wrap">
-        <svg class="icon-coffee" viewBox="0 0 100 90">
-          <path class="steam-line s1" d="M38,40 C30,30 46,24 40,12"/>
-          <path class="steam-line s2" d="M50,40 C42,30 58,24 52,12"/>
-          <path class="steam-line s3" d="M62,40 C54,30 70,24 64,12"/>
-          <path class="cup-body" d="M22,42 h44 v22 a22,22 0 0 1 -22,22 h0 a22,22 0 0 1 -22,-22 z"/>
-          <path class="cup-base" d="M30,86 h24 l-3,4 h-18 z"/>
-          <path fill="none" stroke="#C17F3E" stroke-width="6" d="M66,48 q16,0 16,14 q0,14 -16,14"/>
-        </svg>
-        <svg class="icon-repair" viewBox="0 0 100 100">
-          <g class="gear">
-            <circle class="gear-ring" cx="50" cy="50" r="24"/>
-            <g class="gear-tooth">
-              <rect x="44" y="6" width="12" height="16" rx="2"/>
-              <rect x="44" y="78" width="12" height="16" rx="2"/>
-              <rect x="6" y="44" width="16" height="12" rx="2"/>
-              <rect x="78" y="44" width="16" height="12" rx="2"/>
-              <rect x="44" y="6" width="12" height="16" rx="2" transform="rotate(45 50 50)"/>
-              <rect x="44" y="78" width="12" height="16" rx="2" transform="rotate(45 50 50)"/>
-              <rect x="6" y="44" width="16" height="12" rx="2" transform="rotate(45 50 50)"/>
-              <rect x="78" y="44" width="16" height="12" rx="2" transform="rotate(45 50 50)"/>
-            </g>
-            <circle class="gear-bolt" cx="50" cy="50" r="9"/>
+    <div class="icon-wrap">
+      <svg class="icon-coffee" viewBox="0 0 100 90">
+        <path class="steam-line s1" d="M38,40 C30,30 46,24 40,12"/>
+        <path class="steam-line s2" d="M50,40 C42,30 58,24 52,12"/>
+        <path class="steam-line s3" d="M62,40 C54,30 70,24 64,12"/>
+        <path class="cup-body" d="M22,42 h44 v22 a22,22 0 0 1 -22,22 h0 a22,22 0 0 1 -22,-22 z"/>
+        <path class="cup-base" d="M30,86 h24 l-3,4 h-18 z"/>
+        <path fill="none" stroke="#C17F3E" stroke-width="6" d="M66,48 q16,0 16,14 q0,14 -16,14"/>
+      </svg>
+      <svg class="icon-repair" viewBox="0 0 100 100">
+        <g class="gear">
+          <circle class="gear-ring" cx="50" cy="50" r="24"/>
+          <g class="gear-tooth">
+            <rect x="44" y="6"  width="12" height="16" rx="2"/>
+            <rect x="44" y="78" width="12" height="16" rx="2"/>
+            <rect x="6"  y="44" width="16" height="12" rx="2"/>
+            <rect x="78" y="44" width="16" height="12" rx="2"/>
+            <rect x="44" y="6"  width="12" height="16" rx="2" transform="rotate(45 50 50)"/>
+            <rect x="44" y="78" width="12" height="16" rx="2" transform="rotate(45 50 50)"/>
+            <rect x="6"  y="44" width="16" height="12" rx="2" transform="rotate(45 50 50)"/>
+            <rect x="78" y="44" width="16" height="12" rx="2" transform="rotate(45 50 50)"/>
           </g>
-          <circle class="alert-dot alert-pulse" cx="82" cy="20" r="7"/>
-        </svg>
-      </div>
-
-      <div class="eyebrow" id="eyebrow">Tablica biurowa</div>
-      <div class="quip" id="quip"></div>
-
-      <div class="counter-row" id="counterRow"></div>
-      <div class="counter-label" id="counterLabel">dni bez awarii</div>
-
-      <div class="meta" id="meta"></div>
-
-      <div class="actions" id="actions"></div>
-
-      <button class="link-btn" id="settingsToggle" type="button">Popraw datę ręcznie</button>
-      <div class="settings" id="settings">
-        <div id="settingsFields"></div>
-        <button class="save-btn" id="settingsSave" type="button">Zapisz</button>
-      </div>
-
-      <div class="history">
-        <button class="link-btn" id="historyToggle" type="button">Historia awarii</button>
-        <ul class="history-list" id="historyList" style="display:none;"></ul>
-      </div>
-
-      <footer class="credit">licznik biurowy · dane: kvdb.io</footer>
+          <circle class="gear-bolt" cx="50" cy="50" r="9"/>
+        </g>
+        <circle class="alert-dot alert-pulse" cx="82" cy="20" r="7"/>
+      </svg>
     </div>
+
+    <div class="eyebrow"   id="eyebrow">Tablica biurowa</div>
+    <div class="quip"      id="quip"></div>
+    <div class="counter-row" id="counterRow"></div>
+    <div class="counter-label" id="counterLabel">dni bez awarii</div>
+    <div class="meta"      id="meta"></div>
+    <div class="actions"   id="actions"></div>
+
+    <button class="link-btn" id="settingsToggle" type="button">Popraw datę ręcznie</button>
+    <div class="settings" id="settings">
+      <div id="settingsFields"></div>
+      <button class="save-btn" id="settingsSave" type="button">Zapisz</button>
+    </div>
+
+    <div class="history">
+      <button class="link-btn" id="historyToggle" type="button">Historia awarii</button>
+      <ul class="history-list" id="historyList" style="display:none;"></ul>
+    </div>
+
+    <footer class="credit">licznik biurowy · dane: Firebase</footer>
   </div>
 </div>
 
 <script>
-(function(){
-  // ============================================================
-  // KONFIGURACJA: wklej tutaj Bucket ID po pierwszej konfiguracji
-  // (powstaje automatycznie przy pierwszym uruchomieniu strony)
-  // ============================================================
-  let BUCKET_ID = "29i5wi2t2HE5Rmap9SUHwJ";
+(function () {
+  /* ── Firebase config ─────────────────────────────────────── */
+  const DB_URL     = 'https://kawa-d3431-default-rtdb.europe-west1.firebasedatabase.app';
+  const STATE_NODE = '/coffee-state.json';
+  /* ─────────────────────────────────────────────────────────── */
 
-  const KVDB_BASE = 'https://kvdb.io';
-  const STATE_KEY = 'coffee-state';
   const DAY = 86400000;
-
-  const workingQuips = [
-    "Na razie trzyma się dzielnie.",
-    "Każdy dzień to mały cud.",
-    "Cisza w temacie. Oby tak zostało.",
-    "Ekspres w dobrej formie."
+  const WORKING_QUIPS = [
+    'Na razie trzyma się dzielnie.',
+    'Każdy dzień to mały cud.',
+    'Cisza w temacie. Oby tak zostało.',
+    'Ekspres jeszcze daje radę.'
   ];
-  const brokenQuips = [
-    "Ekspres robi sobie przerwę.",
-    "Kawa? Może następnym razem.",
-    "Serwisant w drodze (oby).",
-    "Tymczasowo bez kofeiny.",
-    "Nie pracujemy?"
+  const BROKEN_QUIPS = [
+    'Ekspres robi sobie przerwę.',
+    'Kawa? Może następnym razem.',
+    'Serwisant w drodze, oby.',
+    'Tymczasowo bez kofeiny.',
+    'Strajk generalny.'
   ];
 
-  let state = null;
-  let offline = false;
-  let prevDigits = [];
-  const quipMemory = {};
+  let state       = null;
+  let offline     = false;
+  let prevDigits  = [];
+  const quipMemo  = {};
 
   const el = {
-    app: document.getElementById('app'),
-    setupView: document.getElementById('setupView'),
-    mainView: document.getElementById('mainView'),
-    setupEmail: document.getElementById('setupEmail'),
-    createBucketBtn: document.getElementById('createBucketBtn'),
-    setupStatus: document.getElementById('setupStatus'),
-    setupResult: document.getElementById('setupResult'),
-    bucketCodeLine: document.getElementById('bucketCodeLine'),
-    copyBucketCode: document.getElementById('copyBucketCode'),
-    continueBtn: document.getElementById('continueBtn'),
-    eyebrow: document.getElementById('eyebrow'),
-    quip: document.getElementById('quip'),
-    counterRow: document.getElementById('counterRow'),
-    counterLabel: document.getElementById('counterLabel'),
-    meta: document.getElementById('meta'),
-    actions: document.getElementById('actions'),
-    offlineBanner: document.getElementById('offlineBanner'),
+    app:            document.getElementById('app'),
+    loadingOverlay: document.getElementById('loadingOverlay'),
+    offlineBanner:  document.getElementById('offlineBanner'),
+    eyebrow:        document.getElementById('eyebrow'),
+    quip:           document.getElementById('quip'),
+    counterRow:     document.getElementById('counterRow'),
+    counterLabel:   document.getElementById('counterLabel'),
+    meta:           document.getElementById('meta'),
+    actions:        document.getElementById('actions'),
     settingsToggle: document.getElementById('settingsToggle'),
-    settings: document.getElementById('settings'),
+    settings:       document.getElementById('settings'),
     settingsFields: document.getElementById('settingsFields'),
-    settingsSave: document.getElementById('settingsSave'),
-    historyToggle: document.getElementById('historyToggle'),
-    historyList: document.getElementById('historyList')
+    settingsSave:   document.getElementById('settingsSave'),
+    historyToggle:  document.getElementById('historyToggle'),
+    historyList:    document.getElementById('historyList'),
   };
 
-  // ---------- kvdb.io wrapper ----------
-  const kv = {
-    async get(key){
-      const res = await fetch(`${KVDB_BASE}/${BUCKET_ID}/${encodeURIComponent(key)}`);
-      if(res.status === 404) return null;
-      if(!res.ok) throw new Error('kvdb get ' + res.status);
-      return await res.text();
-    },
-    async set(key, value){
-      // kvdb.io free plan caps key TTL at 7 days (can't be disabled without a paid plan).
-      // We explicitly request the max allowed TTL on every write; combined with the
-      // touch-on-load and daily keep-alive below, the key effectively never expires
-      // as long as the page is opened at least once a week.
-      const res = await fetch(`${KVDB_BASE}/${BUCKET_ID}/${encodeURIComponent(key)}?ttl=604800`, {
-        method: 'POST',
-        headers: {'Content-Type':'text/plain'},
-        body: value
-      });
-      if(!res.ok) throw new Error('kvdb set ' + res.status);
-      return true;
-    }
-  };
+  /* ── Firebase REST ─────────────────────────────────────────── */
+  async function fbGet() {
+    const res = await fetch(DB_URL + STATE_NODE);
+    if (!res.ok) throw new Error('GET ' + res.status);
+    return res.json(); // null when node doesn't exist yet
+  }
 
-  async function createBucket(email){
-    // No default_ttl override here: disabling/raising TTL needs a paid kvdb.io
-    // plan. We stick with the free-tier default (max 7 days) and instead keep
-    // the key alive indefinitely via the explicit ttl param on every write
-    // plus the touch-on-load / daily keep-alive logic below.
-    let body = '';
-    if(email) body += 'email=' + encodeURIComponent(email);
-    const res = await fetch(KVDB_BASE + '/', {
-      method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded'},
-      body
+  async function fbPut(data) {
+    const res = await fetch(DB_URL + STATE_NODE, {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(data),
     });
-    if(!res.ok) throw new Error('create bucket ' + res.status);
-    return (await res.text()).trim();
+    if (!res.ok) throw new Error('PUT ' + res.status);
   }
 
-  // ---------- helpers ----------
-  function todayISO(){ return new Date().toISOString().slice(0,10); }
+  /* ── Helpers ───────────────────────────────────────────────── */
+  const todayISO = () => new Date().toISOString().slice(0, 10);
 
-  function defaultState(){
-    return { status:'working', counterStart: todayISO(), brokenSince:null, record:0, history:[] };
+  const defaultState = () => ({
+    status: 'working', counterStart: todayISO(),
+    brokenSince: null, record: 0, history: [],
+  });
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso + 'T00:00:00')
+      .toLocaleDateString('pl-PL', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
-  function fmtDate(iso){
-    if(!iso) return '—';
-    const d = new Date(iso + 'T00:00:00');
-    return d.toLocaleDateString('pl-PL', { day:'2-digit', month:'2-digit', year:'numeric' });
+  function daysBetween(a, b) {
+    return Math.max(0, Math.round(
+      (new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / DAY
+    ));
   }
 
-  function daysBetween(fromISO, toISO){
-    const a = new Date(fromISO + 'T00:00:00').getTime();
-    const b = new Date(toISO + 'T00:00:00').getTime();
-    return Math.max(0, Math.round((b - a) / DAY));
-  }
-
-  // ---------- state load/save ----------
-  async function loadState(){
-    try{
-      const raw = await kv.get(STATE_KEY);
-      state = raw ? JSON.parse(raw) : defaultState();
+  /* ── State load / save ─────────────────────────────────────── */
+  async function loadState() {
+    try {
+      const remote = await fbGet();
+      state = remote ?? defaultState();
+      if (!remote) await fbPut(state);
       offline = false;
-      // re-saving on every page load "touches" the key and resets its 7-day
-      // expiry clock, so the data survives as long as someone opens the page
-      // at least once a week (in practice: constantly, for a daily office tool)
-      await saveState();
-    } catch(e){
-      state = state || defaultState();
+    } catch (e) {
+      state   = defaultState();
       offline = true;
     }
     el.offlineBanner.classList.toggle('show', offline);
+    el.loadingOverlay.classList.add('hidden');
     render();
   }
 
-  async function saveState(){
-    try{
-      await kv.set(STATE_KEY, JSON.stringify(state));
-      offline = false;
-    } catch(e){
-      offline = true;
-    }
+  async function saveState() {
+    try   { await fbPut(state); offline = false; }
+    catch { offline = true; }
     el.offlineBanner.classList.toggle('show', offline);
   }
 
-  function currentCount(){
-    const today = todayISO();
-    return state.status === 'working'
-      ? daysBetween(state.counterStart, today)
-      : daysBetween(state.brokenSince, today);
+  /* ── Poll every 20 s for remote changes ────────────────────── */
+  async function poll() {
+    try {
+      const remote = await fbGet();
+      if (remote && JSON.stringify(remote) !== JSON.stringify(state)) {
+        state = remote;
+        render();
+      }
+      if (offline) { offline = false; el.offlineBanner.classList.remove('show'); }
+    } catch { /* keep last known */ }
   }
 
-  function buildDigits(n){ return String(n).padStart(2,'0').split(''); }
+  /* ── Render ─────────────────────────────────────────────────── */
+  function currentCount() {
+    const t = todayISO();
+    return state.status === 'working'
+      ? daysBetween(state.counterStart, t)
+      : daysBetween(state.brokenSince,  t);
+  }
 
-  function renderDigits(digits){
-    if(prevDigits.length !== digits.length){
+  function renderDigits(digits) {
+    if (prevDigits.length !== digits.length) {
       el.counterRow.innerHTML = '';
-      prevDigits = digits.map(()=>null);
+      prevDigits = digits.map(() => null);
     }
-    digits.forEach((d,i) => {
+    digits.forEach((d, i) => {
       let chip = el.counterRow.children[i];
-      if(!chip){
+      if (!chip) {
         chip = document.createElement('div');
         chip.className = 'flip-digit';
         const face = document.createElement('div');
@@ -645,232 +390,176 @@ footer.credit{
         el.counterRow.appendChild(chip);
       }
       const face = chip.querySelector('.face');
-      if(prevDigits[i] !== d){
-        if(prevDigits[i] !== null){
+      if (prevDigits[i] !== d) {
+        if (prevDigits[i] !== null) {
           chip.classList.remove('flipping');
           void chip.offsetWidth;
           chip.classList.add('flipping');
-          setTimeout(()=>{ face.textContent = d; }, 260);
+          setTimeout(() => { face.textContent = d; }, 260);
         } else {
           face.textContent = d;
         }
       }
       prevDigits[i] = d;
     });
-    if(!el.counterRow.querySelector('.counter-unit')){
-      const unit = document.createElement('div');
-      unit.className = 'counter-unit';
-      unit.textContent = 'DNI';
-      el.counterRow.appendChild(unit);
+    if (!el.counterRow.querySelector('.counter-unit')) {
+      const u = document.createElement('div');
+      u.className = 'counter-unit';
+      u.textContent = 'DNI';
+      el.counterRow.appendChild(u);
     }
   }
 
-  function render(){
-    if(!state) return;
-    const isWorking = state.status === 'working';
-    el.app.dataset.state = isWorking ? 'working' : 'broken';
-    el.eyebrow.textContent = isWorking ? 'Tablica biurowa' : 'Awaria zgłoszona';
+  function render() {
+    if (!state) return;
+    const ok = state.status === 'working';
+    el.app.dataset.state = ok ? 'working' : 'broken';
+    el.eyebrow.textContent = ok ? 'Tablica biurowa' : 'Awaria zgłoszona';
 
-    const quipKey = isWorking ? 'w' : 'b';
-    if(!(quipKey in quipMemory)){
-      const arr = isWorking ? workingQuips : brokenQuips;
-      quipMemory[quipKey] = Math.floor(Math.random()*arr.length);
+    const qk = ok ? 'w' : 'b';
+    if (!(qk in quipMemo)) {
+      const arr = ok ? WORKING_QUIPS : BROKEN_QUIPS;
+      quipMemo[qk] = Math.floor(Math.random() * arr.length);
     }
-    el.quip.textContent = (isWorking ? workingQuips : brokenQuips)[quipMemory[quipKey]];
+    el.quip.textContent = (ok ? WORKING_QUIPS : BROKEN_QUIPS)[quipMemo[qk]];
 
-    renderDigits(buildDigits(currentCount()));
-    el.counterLabel.textContent = isWorking ? 'dni bez awarii ekspresu' : 'dni w naprawie';
+    renderDigits(String(currentCount()).padStart(2, '0').split(''));
+    el.counterLabel.textContent = ok ? 'dni bez awarii ekspresu' : 'dni w naprawie';
 
     el.meta.innerHTML = '';
     const a = document.createElement('span');
     const b = document.createElement('span');
-    if(isWorking){
-      a.innerHTML = 'rekord: <b>' + state.record + ' dni</b>';
+    if (ok) {
+      a.innerHTML = 'rekord: <b>' + (state.record || 0) + ' dni</b>';
       b.innerHTML = 'licznik od: <b>' + fmtDate(state.counterStart) + '</b>';
     } else {
       a.innerHTML = 'zepsuty od: <b>' + fmtDate(state.brokenSince) + '</b>';
-      b.innerHTML = 'najlepsza seria: <b>' + state.record + ' dni</b>';
+      b.innerHTML = 'najlepsza seria: <b>' + (state.record || 0) + ' dni</b>';
     }
-    el.meta.appendChild(a); el.meta.appendChild(b);
+    el.meta.appendChild(a);
+    el.meta.appendChild(b);
 
-    renderActions(isWorking);
-    renderSettingsFields(isWorking);
+    renderActions(ok);
+    renderSettingsFields(ok);
     renderHistory();
   }
 
-  function renderActions(isWorking){
+  function renderActions(isWorking) {
     el.actions.innerHTML = '';
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.dataset.armed = 'false';
     btn.className = isWorking ? 'btn btn-report' : 'btn btn-fixed';
-    btn.innerHTML = isWorking ? '☕ Zgłoś awarię' : '🔧 Ekspres naprawiony';
-    const baseLabel = btn.innerHTML;
-    let armTimer = null;
+    btn.innerHTML   = isWorking ? '☕ Zgłoś awarię' : '🔧 Ekspres naprawiony';
+    const base = btn.innerHTML;
+    let timer = null;
     btn.addEventListener('click', () => {
-      if(btn.dataset.armed === 'false'){
+      if (btn.dataset.armed === 'false') {
         btn.dataset.armed = 'true';
         btn.classList.add('armed');
         btn.textContent = 'Na pewno? Kliknij ponownie';
-        armTimer = setTimeout(() => {
+        timer = setTimeout(() => {
           btn.dataset.armed = 'false';
           btn.classList.remove('armed');
-          btn.innerHTML = baseLabel;
+          btn.innerHTML = base;
         }, 4000);
       } else {
-        clearTimeout(armTimer);
+        clearTimeout(timer);
         btn.dataset.armed = 'false';
+        btn.disabled = true;
         isWorking ? reportFailure() : markFixed();
       }
     });
     el.actions.appendChild(btn);
   }
 
-  async function reportFailure(){
+  async function reportFailure() {
     const today = todayISO();
-    const streak = daysBetween(state.counterStart, today);
-    state.record = Math.max(state.record || 0, streak);
-    state.status = 'broken';
-    state.brokenSince = today;
-    state._lastStreak = streak;
+    state.record       = Math.max(state.record || 0, daysBetween(state.counterStart, today));
+    state._lastStreak  = daysBetween(state.counterStart, today);
+    state.status       = 'broken';
+    state.brokenSince  = today;
     await saveState();
     render();
   }
 
-  async function markFixed(){
-    const today = todayISO();
+  async function markFixed() {
+    const today      = todayISO();
     const repairDays = daysBetween(state.brokenSince, today);
-    state.history = state.history || [];
-    state.history.unshift({ brokenAt: state.brokenSince, fixedAt: today, repairDays, streakBefore: state._lastStreak ?? null });
-    state.history = state.history.slice(0,30);
-    state.status = 'working';
+    state.history    = (state.history || []);
+    state.history.unshift({
+      brokenAt: state.brokenSince, fixedAt: today,
+      repairDays, streakBefore: state._lastStreak ?? null,
+    });
+    state.history     = state.history.slice(0, 30);
+    state.status      = 'working';
     state.counterStart = today;
-    state.brokenSince = null;
+    state.brokenSince  = null;
     await saveState();
     render();
   }
 
-  function renderSettingsFields(isWorking){
+  function renderSettingsFields(isWorking) {
     el.settingsFields.innerHTML = '';
     const label = document.createElement('label');
     const input = document.createElement('input');
-    input.type = 'date';
-    input.id = 'dateInput';
-    input.max = todayISO();
-    if(isWorking){ label.textContent = 'Data startu obecnej serii'; input.value = state.counterStart; }
-    else { label.textContent = 'Data zgłoszenia awarii'; input.value = state.brokenSince; }
+    input.type  = 'date';
+    input.id    = 'dateInput';
+    input.max   = todayISO();
+    label.textContent = isWorking ? 'Data startu obecnej serii' : 'Data zgłoszenia awarii';
+    input.value       = isWorking ? state.counterStart : state.brokenSince;
     el.settingsFields.appendChild(label);
     el.settingsFields.appendChild(input);
   }
 
-  function renderHistory(){
+  function renderHistory() {
     el.historyList.innerHTML = '';
     const hist = state.history || [];
-    if(hist.length === 0){
+    if (!hist.length) {
       const li = document.createElement('li');
-      li.className = 'history-empty';
+      li.className   = 'history-empty';
       li.textContent = 'Brak zgłoszonych awarii — na razie cisza.';
       el.historyList.appendChild(li);
       return;
     }
     hist.forEach(h => {
-      const li = document.createElement('li');
-      const left = document.createElement('span');
-      left.textContent = fmtDate(h.brokenAt) + ' → ' + fmtDate(h.fixedAt);
+      const li    = document.createElement('li');
+      const left  = document.createElement('span');
       const right = document.createElement('span');
-      right.className = 'badge';
+      left.textContent  = fmtDate(h.brokenAt) + ' → ' + fmtDate(h.fixedAt);
+      right.className   = 'badge';
       right.textContent = h.repairDays + ' dni napr.';
-      li.appendChild(left); li.appendChild(right);
+      li.appendChild(left);
+      li.appendChild(right);
       el.historyList.appendChild(li);
     });
   }
 
-  el.settingsToggle.addEventListener('click', () => el.settings.classList.toggle('open'));
+  /* ── Event listeners ─────────────────────────────────────── */
+  el.settingsToggle.addEventListener('click', () =>
+    el.settings.classList.toggle('open'));
+
   el.settingsSave.addEventListener('click', async () => {
     const input = document.getElementById('dateInput');
-    if(!input || !input.value) return;
-    if(state.status === 'working') state.counterStart = input.value;
-    else state.brokenSince = input.value;
+    if (!input?.value) return;
+    if (state.status === 'working') state.counterStart = input.value;
+    else                            state.brokenSince  = input.value;
     await saveState();
     el.settings.classList.remove('open');
     render();
   });
+
   el.historyToggle.addEventListener('click', () => {
-    const visible = el.historyList.style.display !== 'none';
-    el.historyList.style.display = visible ? 'none' : 'flex';
+    const v = el.historyList.style.display !== 'none';
+    el.historyList.style.display       = v ? 'none' : 'flex';
     el.historyList.style.flexDirection = 'column';
   });
 
-  async function poll(){
-    if(!BUCKET_ID) return;
-    try{
-      const raw = await kv.get(STATE_KEY);
-      if(raw){
-        const incoming = JSON.parse(raw);
-        if(JSON.stringify(incoming) !== JSON.stringify(state)){ state = incoming; render(); }
-      }
-      if(offline){ offline = false; el.offlineBanner.classList.remove('show'); }
-    } catch(e){ /* keep last known state */ }
-  }
-
-  function startBackgroundLoops(){
-    setInterval(poll, 20000);
-    setInterval(render, 60000);
-    // keeps a tab left open 24/7 (e.g. an office wall display) from ever
-    // hitting the 7-day kvdb.io TTL, by re-touching the key once a day
-    setInterval(() => { saveState().catch(()=>{}); }, 24*60*60*1000);
-  }
-
-  // ---------- setup flow ----------
-  el.createBucketBtn.addEventListener('click', async () => {
-    el.createBucketBtn.disabled = true;
-    el.setupStatus.textContent = 'Tworzę bazę…';
-    el.setupStatus.classList.remove('error');
-    try{
-      const id = await createBucket(el.setupEmail.value.trim());
-      BUCKET_ID = id;
-      el.bucketCodeLine.textContent = 'let BUCKET_ID = "' + id + '";';
-      el.setupResult.style.display = 'block';
-      el.setupStatus.textContent = 'Baza utworzona ✓';
-    } catch(e){
-      el.setupStatus.textContent = 'Nie udało się utworzyć bazy. Sprawdź połączenie i spróbuj ponownie.';
-      el.setupStatus.classList.add('error');
-      el.createBucketBtn.disabled = false;
-    }
+  /* ── Boot ───────────────────────────────────────────────── */
+  loadState().then(() => {
+    setInterval(poll,   20_000);   // sync with other browsers
+    setInterval(render, 60_000);   // tick the day counter
   });
-
-  el.copyBucketCode.addEventListener('click', async () => {
-    const text = el.bucketCodeLine.textContent;
-    try{
-      await navigator.clipboard.writeText(text);
-      el.copyBucketCode.textContent = 'Skopiowano ✓';
-      setTimeout(()=>{ el.copyBucketCode.textContent = 'Kopiuj linijkę'; }, 2000);
-    } catch(e){
-      const range = document.createRange();
-      range.selectNode(el.bucketCodeLine);
-      window.getSelection().removeAllRanges();
-      window.getSelection().addRange(range);
-    }
-  });
-
-  el.continueBtn.addEventListener('click', async () => {
-    el.setupView.style.display = 'none';
-    el.mainView.style.display = 'block';
-    await loadState();
-    startBackgroundLoops();
-  });
-
-  // ---------- boot ----------
-  if(!BUCKET_ID){
-    el.setupView.style.display = 'block';
-    el.mainView.style.display = 'none';
-  } else {
-    el.setupView.style.display = 'none';
-    el.mainView.style.display = 'block';
-    loadState().then(() => {
-      startBackgroundLoops();
-    });
-  }
 })();
 </script>
 </body>
