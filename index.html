@@ -229,6 +229,7 @@ footer.credit{margin-top:22px;font-size:11px;opacity:0.4;font-family:'JetBrains 
       </svg>
     </div>
 
+    <div class="eyebrow"   id="eyebrow">Tablica biurowa</div>
     <div class="quip"      id="quip"></div>
     <div class="counter-row" id="counterRow"></div>
     <div class="counter-label" id="counterLabel">dni bez awarii</div>
@@ -413,7 +414,7 @@ footer.credit{margin-top:22px;font-size:11px;opacity:0.4;font-family:'JetBrains 
     if (!state) return;
     const ok = state.status === 'working';
     el.app.dataset.state = ok ? 'working' : 'broken';
-    el.eyebrow.textContent = ok ? 'Awaria zgłoszona';
+    el.eyebrow.textContent = ok ? 'Tablica biurowa' : 'Awaria zgłoszona';
 
     const qk = ok ? 'w' : 'b';
     if (!(qk in quipMemo)) {
